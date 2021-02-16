@@ -92,9 +92,10 @@ int main(void)
   GPIO_PinState SwitchState1[2];
   GPIO_PinState SwitchState2[2];
   GPIO_PinState SwitchState3[2];
-  uint16_t LED1_HalfPeriod = 500;
+  uint16_t LED1_HalfPeriod = 250;
+  uint16_t LED3_FirstPeroid = 500;
+  uint16_t LED3_SecondPeroid = 1500;
   uint32_t TimeStamp1 = 0;
-  uint32_t TimeStamp2 = 0;
   uint32_t TimeStamp3 = 0;
   uint32_t ButtonTimeStamp = 0;
   /* USER CODE END 2 */
@@ -129,8 +130,39 @@ int main(void)
 			  LED1_HalfPeriod = 250;
 		  }
 	  }
-	  SwitchState1[1] == SwitchState1[0];
+
+	  SwitchState2[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);
+	  if(SwitchState2[1] == GPIO_PIN_SET && SwitchState2[0] == GPIO_PIN_RESET)
+	  {
+		  if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_7) == GPIO_PIN_RESET)
+		  {
+			  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);
+		  }
+		  else
+		  {
+			  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_RESET);
+		  }
 	  }
+
+	  SwitchState3[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
+	  if(SwitchState3[1] == GPIO_PIN_SET && SwitchState3[0] == GPIO_PIN_RESET)
+	  {
+		  if(LED3_FirstPeroid == 500)
+		  {
+			  LED3_FirstPeroid = 1500;
+			  LED3_SecondPeroid = 500;
+		  }
+		  else
+		  {
+			  LED3_FirstPeroid = 500;
+			  LED3_SecondPeroid = 1500;
+		  }
+	  }
+	  SwitchState1[1] = SwitchState1[0];
+	  SwitchState2[1] = SwitchState2[0];
+	  SwitchState3[1] = SwitchState3[0];
+	  }
+
 	  if(HAL_GetTick() - TimeStamp1 >= LED1_HalfPeriod)
 	  {
 		  TimeStamp1 = HAL_GetTick();
@@ -142,6 +174,17 @@ int main(void)
 		  {
 			  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
 		  }
+	  }
+
+	  if(HAL_GetTick() - TimeStamp3 >= LED3_FirstPeroid && HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == GPIO_PIN_SET)
+	  {
+		  TimeStamp3 = HAL_GetTick();
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+	  }
+	  else if(HAL_GetTick() - TimeStamp3 >= LED3_SecondPeroid && HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_6) == GPIO_PIN_RESET)
+	  {
+		  TimeStamp3 = HAL_GetTick();
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
 	  }
   }
   /* USER CODE END 3 */
