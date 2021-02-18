@@ -113,21 +113,21 @@ int main(void)
 	  SwitchState1[0] = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
 	  if(SwitchState1[1] == GPIO_PIN_SET && SwitchState1[0] == GPIO_PIN_RESET)
 	  {
-		  if(LED1_HalfPeriod == 250)
+		  if(LED1_HalfPeriod == 1000) //0.5Hz
 		  {
 			  LED1_HalfPeriod = 500;
 		  }
-		  else if(LED1_HalfPeriod == 500)
-		  {
-			  LED1_HalfPeriod = 1000;
-		  }
-		  else if(LED1_HalfPeriod == 1000)
-		  		  {
-		  			  LED1_HalfPeriod = 1500;
-		  		  }
-		  else
+		  else if(LED1_HalfPeriod == 500) //1Hz
 		  {
 			  LED1_HalfPeriod = 250;
+		  }
+		  else if(LED1_HalfPeriod == 250) //2Hz
+		  		  {
+		  			  LED1_HalfPeriod = 166;
+		  		  }
+		  else //3Hz
+		  {
+			  LED1_HalfPeriod = 1000;
 		  }
 	  }
 
