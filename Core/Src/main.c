@@ -149,8 +149,8 @@ int main(void)
 	  {
 		  if(LED3_FirstPeroid == 500)
 		  {
-			  LED3_FirstPeroid = 1500;
-			  LED3_SecondPeroid = 500;
+			  LED3_FirstPeroid = 1500; //On
+			  LED3_SecondPeroid = 500; //Off
 		  }
 		  else
 		  {
